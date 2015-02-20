@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Linq;
 using System.Linq;
+using System.Security.RightsManagement;
 
 namespace ZainGym.DataAccess
 {
@@ -42,6 +44,12 @@ namespace ZainGym.DataAccess
 		{
 			_dataContext.SubmitChanges();
 		}
+
+		public void MarkForDeletion(T entity)
+		{
+			GetTable.DeleteOnSubmit(entity);
+		}
+
 		#endregion
 
 		#region Constructor
