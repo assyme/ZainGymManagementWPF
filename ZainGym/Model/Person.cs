@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Windows.Markup;
 
@@ -13,12 +14,22 @@ namespace ZainGym.Model
 		private string _lastName;
 		private DateTime _dateOfBirth;
 		private string _mobileNumber = string.Empty;
+
+		private EntitySet<Membership> _memberships;
+		#endregion
+
+		#region Constructors
+
+		public Person()
+		{
+			_memberships = new EntitySet<Membership>();
+		}
 		#endregion
 
 
 		#region Public Properties
 
-		[Column(Name = "Id",IsPrimaryKey = true)]
+		[Column(Name = "Id",IsPrimaryKey = true,IsDbGenerated = true)]
 		public int Id
 		{
 			get { return _id; }
@@ -51,6 +62,47 @@ namespace ZainGym.Model
 		{
 			get { return _mobileNumber; }
 			set { _mobileNumber = value; }
+		}
+
+		[Association(Storage = "_memberships", OtherKey = "PersonId")]
+		public EntitySet<Membership> Memberships
+		{
+			get { return _memberships;}
+			set
+			{
+				foreach (Membership membership in value)
+				{
+					_memberships.Add(membership);
+				}
+			}
+		} 
+
+		public string FullName
+		{
+			get { return FirstName + " " +LastName; }
+		}
+
+		public string ExpiresOn
+		{
+			get
+			{
+				DateTime latestDate = DateTime.UtcNow;
+				foreach (Membership membership in Memberships)
+				{
+					if (membership.MemberExpiry > latestDate)
+					{
+						latestDate = membership.MemberExpiry;
+					}
+				}
+				if (latestDate > DateTime.UtcNow)
+				{
+					return latestDate.ToString("dd/MM/yyyy");
+				}
+				else
+				{
+					return "Expired";
+				}
+			}
 		}
 		#endregion
 

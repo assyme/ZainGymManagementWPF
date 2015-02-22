@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ZainGym.DataAccess;
 using ZainGym.Model;
+using ZainGym.ViewModel;
 
 namespace ZainGym
 {
@@ -26,10 +27,6 @@ namespace ZainGym
 		public MainWindow()
 		{
 			InitializeComponent();
-			string connectionString = ConfigurationManager.ConnectionStrings["ZainDBContext"].ConnectionString;
-			System.Data.Linq.DataContext dataContext = new DataContext(connectionString);
-			IRepository<Person> repository = new Repository<Person>(dataContext);
-			List<Person> persons = repository.GetAll().ToList();
 		}
 	}
 }
