@@ -42,7 +42,7 @@ namespace ZainGym.Model
 			set { _memberExpiry = value; }
 		}
 
-		[Association(Storage = "_person", ThisKey = "PersonId" )]
+		[Association(Storage = "_person", ThisKey = "PersonId",OtherKey = "Id",IsForeignKey = true)]
 		public Person Person
 		{
 			get { return _person.Entity; }

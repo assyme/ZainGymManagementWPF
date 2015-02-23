@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Markup;
 
 namespace ZainGym.Model
@@ -64,7 +66,7 @@ namespace ZainGym.Model
 			set { _mobileNumber = value; }
 		}
 
-		[Association(Storage = "_memberships", OtherKey = "PersonId")]
+		[Association(Storage = "_memberships",ThisKey = "Id",OtherKey = "PersonId")]
 		public EntitySet<Membership> Memberships
 		{
 			get { return _memberships;}
@@ -109,6 +111,8 @@ namespace ZainGym.Model
 		#region Data Validations
 		public override bool IsValid()
 		{
+			ValidationMessages.Clear();
+			
 			if (String.IsNullOrEmpty(FirstName))
 			{
 				ValidationMessages.Add("First Name should be provided.");
@@ -132,16 +136,24 @@ namespace ZainGym.Model
 					ValidationMessages.Add("Last Name should be more then 1 characters");
 				}
 			}
-
-			if (MobileNumber.Length != 10)
+			
+			if (!String.IsNullOrEmpty(MobileNumber) && (MobileNumber.Length != 10 || !Regex.IsMatch(MobileNumber, "[0-9]")))
 			{
 				ValidationMessages.Add("Mobile number should be of 10 digits.");
+			}
+			var validMemberships = (from membership in Memberships 
+									let currentTime = DateTime.UtcNow 
+									where currentTime >= membership.MemberFrom && currentTime <= membership.MemberExpiry 
+									select membership).Count();
+			
+			if (validMemberships > 1)
+			{
+				ValidationMessages.Add("Too many valid memberships found for the user.");
 			}
 
 			return ValidationMessages.Count == 0;
 		}
 		#endregion
 
-		
 	}
 }
