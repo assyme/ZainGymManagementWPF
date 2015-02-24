@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
@@ -10,8 +12,9 @@ namespace ZainGym.ViewModel
 	{
 		#region Private properties
 
-		private IRepository<Person> _repository;
+		private readonly IRepository<Person> _repository;
 		private ObservableCollection<Person> _allMembers;
+		private string _searchText;
 
 		#endregion
 
@@ -36,7 +39,38 @@ namespace ZainGym.ViewModel
 			}
 		}
 
-		
+		//public ICommand SearchMember
+		//{
+		//	get
+		//	{
+		//		if (_searchMemberCommand == null)
+		//		{
+		//			_searchMemberCommand = new RelayCommand(SearchMemberExecute, CanExecuteSearchMember);
+		//		}
+		//		return _searchMemberCommand;
+		//	}
+		//}
+
+		//private bool CanExecuteSearchMember(object obj)
+		//{
+		//	return true;
+		//}
+
+		//private void SearchMemberExecute(object obj)
+		//{
+		//	AllMembers = new ObservableCollection<Person> (_repository.GetAll().Where(x => x.FullName.Contains(SearchText)));
+		//}
+
+		public string SearchText
+		{
+			get { return _searchText; }
+			set
+			{
+				_searchText = value;
+				AllMembers = new ObservableCollection<Person>(_repository.GetAll().Where(x => x.FullName.Contains(_searchText)));
+				OnPropertyChanged("SearchText");
+			}
+		}
 
 		#endregion
 	}

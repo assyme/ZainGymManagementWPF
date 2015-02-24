@@ -13,7 +13,6 @@ namespace ZainGym.ViewModel
 	class HomeWindowViewModel : BaseViewModel
 	{
 		private MemberListViewModel _memberListViewModel;
-		private IRepository<Person> _personRepository;
 		private AddNewMemberViewModel _addMemberViewModel;
 
 		/// <summary>
@@ -21,14 +20,18 @@ namespace ZainGym.ViewModel
 		/// </summary>
 		public HomeWindowViewModel()
 		{
-			_personRepository = new Repository<Person>(GlobalEngine.TheGlobalEngine.DataContext);
-			_memberListViewModel = new MemberListViewModel(_personRepository);
-
-			_addMemberViewModel = new AddNewMemberViewModel(_personRepository);
-
+			IRepository<Person> personRepository = new PersonRepository(GlobalEngine.TheGlobalEngine.DataContext);
+			_memberListViewModel = new MemberListViewModel(personRepository);
+			_addMemberViewModel = new AddNewMemberViewModel(personRepository);
+			_addMemberViewModel.OnMemberCreated += AddMemberViewModelOnOnMemberCreated;
 			#region bind events and vm's
 			
 			#endregion
+		}
+
+		private void AddMemberViewModelOnOnMemberCreated(object sender, Person newMember)
+		{
+			_memberListViewModel.AllMembers.Add(newMember);
 		}
 
 		public MemberListViewModel MemberListViewModel
