@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Metadata.Edm;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZainGym.Business;
+﻿using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
 
@@ -14,6 +8,7 @@ namespace ZainGym.ViewModel
 	{
 		private MemberListViewModel _memberListViewModel;
 		private AddNewMemberViewModel _addMemberViewModel;
+		private MemberDetailViewModel _memberDetailViewModel;
 
 		/// <summary>
 		/// public constructor to instantiate the view model. 
@@ -22,11 +17,19 @@ namespace ZainGym.ViewModel
 		{
 			IRepository<Person> personRepository = new PersonRepository(GlobalEngine.TheGlobalEngine.DataContext);
 			_memberListViewModel = new MemberListViewModel(personRepository);
+			_memberDetailViewModel = new MemberDetailViewModel(personRepository);
 			_addMemberViewModel = new AddNewMemberViewModel(personRepository);
-			_addMemberViewModel.OnMemberCreated += AddMemberViewModelOnOnMemberCreated;
+
 			#region bind events and vm's
-			
+			_addMemberViewModel.OnMemberCreated += AddMemberViewModelOnOnMemberCreated;
+			_memberListViewModel.OnMemberSelected += SelectMemberForDetailView;
+
 			#endregion
+		}
+
+		private void SelectMemberForDetailView(object sender, Person selectedperson)
+		{
+			_memberDetailViewModel.SelectedMember = selectedperson;
 		}
 
 		private void AddMemberViewModelOnOnMemberCreated(object sender, Person newMember)
@@ -51,6 +54,19 @@ namespace ZainGym.ViewModel
 			{
 				_addMemberViewModel = value;
 				OnPropertyChanged("AddMemberViewModel");
+			}
+		}
+
+		public MemberDetailViewModel MemberDetailViewModel
+		{
+			get
+			{
+				return _memberDetailViewModel;
+			}
+			set
+			{
+				_memberDetailViewModel = value;
+				OnPropertyChanged("MemberDetailViewModel");
 			}
 		}
 	}

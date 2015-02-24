@@ -3,13 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:ZainGym.View"
         Title="HomeWindow" Height="700" Width="1024">
-    <DockPanel Margin="4" LastChildFill="True">
-        <Border Padding="4" DockPanel.Dock="Top" BorderBrush="GhostWhite" Background="LightGray" BorderThickness="1">
-           <view:MemberListView  DataContext="{Binding Path=MemberListViewModel}"></view:MemberListView>
-        </Border>
-        <Border Padding="4" DockPanel.Dock="Bottom" BorderBrush="GhostWhite" Background="LightGray" BorderThickness="1">
-            <view:AddMemberView DataContext="{Binding Path=AddMemberViewModel}"></view:AddMemberView>    
-        </Border>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <view:MemberListView Grid.Column="0" Grid.Row="0" DataContext="{Binding Path=MemberListViewModel}"></view:MemberListView>
+        <GridSplitter Grid.Row="0" Grid.Column="1" Width="5" HorizontalAlignment="Stretch"></GridSplitter>
+        <view:MemberDetailView Grid.Column="2" Grid.Row="0" DataContext="{Binding Path=MemberDetailViewModel}"></view:MemberDetailView>
+        <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch"></GridSplitter>
+        <view:AddMemberView Height="200" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" DataContext="{Binding Path=AddMemberViewModel}"></view:AddMemberView>
         
-    </DockPanel>
+    </Grid>
 </Window>

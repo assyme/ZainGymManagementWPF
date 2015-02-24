@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
@@ -15,7 +16,15 @@ namespace ZainGym.ViewModel
 		private readonly IRepository<Person> _repository;
 		private ObservableCollection<Person> _allMembers;
 		private string _searchText;
+		private Person _selectedMember;
 
+		#endregion
+
+		#region Events and Delegates
+
+		public delegate void MemberSelected(Object sender, Person selectedPerson);
+
+		public event MemberSelected OnMemberSelected;
 		#endregion
 
 		#region Constructors
@@ -31,35 +40,13 @@ namespace ZainGym.ViewModel
 
 		public ObservableCollection<Person> AllMembers
 		{
-			get { return _allMembers;}
+			get { return _allMembers; }
 			set
 			{
 				_allMembers = value;
 				OnPropertyChanged("AllMembers");
 			}
 		}
-
-		//public ICommand SearchMember
-		//{
-		//	get
-		//	{
-		//		if (_searchMemberCommand == null)
-		//		{
-		//			_searchMemberCommand = new RelayCommand(SearchMemberExecute, CanExecuteSearchMember);
-		//		}
-		//		return _searchMemberCommand;
-		//	}
-		//}
-
-		//private bool CanExecuteSearchMember(object obj)
-		//{
-		//	return true;
-		//}
-
-		//private void SearchMemberExecute(object obj)
-		//{
-		//	AllMembers = new ObservableCollection<Person> (_repository.GetAll().Where(x => x.FullName.Contains(SearchText)));
-		//}
 
 		public string SearchText
 		{
@@ -71,6 +58,24 @@ namespace ZainGym.ViewModel
 				OnPropertyChanged("SearchText");
 			}
 		}
+
+		public Person SelectedMember
+		{
+			get { return _selectedMember; }
+			set
+			{
+				_selectedMember = value;
+				if (OnMemberSelected != null)
+				{
+					OnMemberSelected(this, _selectedMember);
+				}
+				OnPropertyChanged("SelectedMember");
+			}
+		}
+
+		#endregion
+
+		#region Events
 
 		#endregion
 	}

@@ -103,9 +103,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\HomeWindowViewModel.cs" />
+    <Compile Include="ViewModel\MemberDetailViewModel.cs" />
     <Compile Include="ViewModel\MemberListViewModel.cs" />
     <Compile Include="View\AddMemberView.xaml.cs">
       <DependentUpon>AddMemberView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MemberDetailView.xaml.cs">
+      <DependentUpon>MemberDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MemberListView.xaml.cs">
       <DependentUpon>MemberListView.xaml</DependentUpon>
@@ -141,9 +145,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Resource Include="Resources\Images\Home.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Zain.mdf</DependentUpon>
     </Content>
+    <Resource Include="Resources\Images\Logo.jpg" />
+    <Resource Include="Resources\Images\Home.jpg" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -178,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddMemberView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MemberDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

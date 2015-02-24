@@ -12,7 +12,7 @@
                 <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="120"></TextBox>
             </StackPanel>
         </Border>
-        <DataGrid ItemsSource="{Binding Path=AllMembers}" 
+        <DataGrid SelectedItem="{Binding Path=SelectedMember}" ItemsSource="{Binding Path=AllMembers}" 
               AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True"
                   ColumnWidth="*" HorizontalScrollBarVisibility="Auto" Height="400">
             <DataGrid.Columns>
