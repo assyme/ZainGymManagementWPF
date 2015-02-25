@@ -6,16 +6,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True">
-        <Border Margin="0,0,0,5" Background="LightGray" BorderBrush="GhostWhite" CornerRadius="2" BorderThickness="1" DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal" DataContext="{Binding Path=SelectedMember}" >
+        <Border Margin="0,0,0,4" DockPanel.Dock="Top" Background="LightGray" BorderBrush="GhostWhite" BorderThickness="1">
+            <TextBlock Text="{Binding Path=SelectedMember.FullName}"></TextBlock>
+        </Border>
+        <Border Margin="0,0,0,4" Background="LightGray" BorderBrush="GhostWhite" CornerRadius="2" BorderThickness="1" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" >
                 <Label>Starts From:</Label>
-                <DatePicker></DatePicker>
+                <DatePicker Text="{Binding Path=StartOn}"></DatePicker>
                 <Label>Expires on:</Label>
-                <DatePicker></DatePicker>
-                <Button Content="Renew"></Button>
+                <DatePicker Text="{Binding Path=EndOn}"></DatePicker>
+                <Button Content="Renew" Command="{Binding Path=RenewMembershipCommand}"></Button>
             </StackPanel>
         </Border>
-        
         <DataGrid DockPanel.Dock="Bottom" ItemsSource="{Binding Path=Memberships}" AutoGenerateColumns="False" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Membership from" IsReadOnly="True">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ZainGym.Business;
@@ -87,8 +88,13 @@ namespace ZainGym.ViewModel
 		{
 			if (NewMember.IsValid())
 			{
+				Person memberToAdd = _personRepository.CreateInstance();
+				memberToAdd.FirstName = NewMember.FirstName;
+				memberToAdd.LastName = NewMember.LastName;
+				memberToAdd.MobileNumber = NewMember.MobileNumber;
+				memberToAdd.DateOfBirth = NewMember.DateOfBirth;
+				memberToAdd.Memberships = NewMember.Memberships;
 				_personRepository.SaveAll();
-
 				if (OnMemberCreated != null)
 					OnMemberCreated(this, NewMember);
 
@@ -98,8 +104,9 @@ namespace ZainGym.ViewModel
 
 		private void RefreshNewMember()
 		{
-			NewMember = _personRepository.CreateInstance();
-			_newMembership = NewMember.Memberships[0]; //maybe get it from repository?
+			NewMember = new Person();
+			_newMembership = new Membership {MemberExpiry = DateTime.UtcNow.AddMonths(1), MemberFrom = DateTime.UtcNow,Person = NewMember};
+			NewMember.Memberships.Add(_newMembership);
 		}
 
 		#endregion

@@ -25,6 +25,7 @@ namespace ZainGym.Model
 		public Person()
 		{
 			_memberships = new EntitySet<Membership>();
+			_dateOfBirth = DateTime.UtcNow;
 		}
 		#endregion
 
