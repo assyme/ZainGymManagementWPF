@@ -15,6 +15,7 @@ namespace ZainGym.ViewModel
 		private DateTime _startOn;
 		private DateTime _endOn;
 		private ICommand _renewMembershipCommand;
+		private bool _showRenewButton;
 
 		#region Constructor
 		public MemberDetailViewModel(IRepository<Person> repository)
@@ -33,6 +34,10 @@ namespace ZainGym.ViewModel
 			{
 				_selectedMember = value;
 				Memberships = new ObservableCollection<Membership>(_selectedMember.Memberships);
+				if (SelectedMember != null)
+				{
+					ShowRenewButton = true;
+				}
 				OnPropertyChanged("SelectedMember");
 			}
 		}
@@ -67,6 +72,16 @@ namespace ZainGym.ViewModel
 			{
 				_memberships = value;
 				OnPropertyChanged("Memberships");
+			}
+		}
+
+		public bool ShowRenewButton
+		{
+			get { return _showRenewButton; }
+			set
+			{
+				_showRenewButton = value;
+				OnPropertyChanged("ShowRenewButton");
 			}
 		}
 

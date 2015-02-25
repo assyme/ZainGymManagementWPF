@@ -34,6 +34,6 @@
         <DatePicker Grid.Column="1" Grid.Row="4" Height="25" Width="120" Text="{Binding Path=MembershipFrom}"></DatePicker>
         <DatePicker Grid.Column="3" Grid.Row="4" Height="25" Width="120" Text="{Binding Path=MembershipTo}"></DatePicker>
         <!--<Calendar Grid.Column="1" Grid.Row="4" SelectedDate="{Binding Path=NewMember.DateOfBirth}"></Calendar>-->
-        <Button Grid.Row="5" Grid.Column="1" Content="Add new member" Width="100" HorizontalAlignment="Right" Command="{Binding Path=AddNewMemberCommand}"></Button>
+        <Button Margin="0,4,0,0" Grid.Row="5" Grid.Column="3" Content="Add member" Width="100" Command="{Binding Path=AddNewMemberCommand}"></Button>
     </Grid>
 </UserControl>
