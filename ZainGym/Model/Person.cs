@@ -4,6 +4,7 @@ using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
+using System.Windows.Media.Imaging;
 
 namespace ZainGym.Model
 {
@@ -18,6 +19,8 @@ namespace ZainGym.Model
 		private string _mobileNumber = string.Empty;
 
 		private EntitySet<Membership> _memberships;
+		private Binary _displayPic;
+
 		#endregion
 
 		#region Constructors
@@ -78,7 +81,17 @@ namespace ZainGym.Model
 					_memberships.Add(membership);
 				}
 			}
-		} 
+		}
+		
+		[Column(Name = "DisplayPic")]
+		public Binary DisplayPic
+		{
+			get
+			{
+				return _displayPic;
+			}
+			set { _displayPic = value; }
+		}
 
 		public string FullName
 		{

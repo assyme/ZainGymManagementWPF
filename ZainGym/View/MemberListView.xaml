@@ -14,7 +14,7 @@
         </Border>
         <DataGrid SelectedItem="{Binding Path=SelectedMember}" ItemsSource="{Binding Path=AllMembers}" 
               AutoGenerateColumns="False" CanUserAddRows="False" CanUserSortColumns="True"
-                  ColumnWidth="*" HorizontalScrollBarVisibility="Auto" Height="400">
+                  ColumnWidth="*" HorizontalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Id" Width="SizeToCells" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>

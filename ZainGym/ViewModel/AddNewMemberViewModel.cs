@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Data.Linq;
+using System.Security.AccessControl;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
+using WebCam_Capture;
 
 namespace ZainGym.ViewModel
 {
@@ -29,6 +32,9 @@ namespace ZainGym.ViewModel
 			_personRepository = personRepository;
 
 			RefreshNewMember();
+
+			#region Camera Behavior
+			#endregion
 		}
 
 		
@@ -94,6 +100,13 @@ namespace ZainGym.ViewModel
 				memberToAdd.MobileNumber = NewMember.MobileNumber;
 				memberToAdd.DateOfBirth = NewMember.DateOfBirth;
 				memberToAdd.Memberships = NewMember.Memberships;
+
+				#region Save Image
+
+				memberToAdd.DisplayPic = ImageHelper.GetBinaryFromImageSource(@"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg");
+				
+				#endregion
+
 				_personRepository.SaveAll();
 				if (OnMemberCreated != null)
 					OnMemberCreated(this, NewMember);

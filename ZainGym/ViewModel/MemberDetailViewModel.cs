@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
@@ -16,6 +18,7 @@ namespace ZainGym.ViewModel
 		private DateTime _endOn;
 		private ICommand _renewMembershipCommand;
 		private bool _showRenewButton;
+		private ImageSource _displayPic;
 
 		#region Constructor
 		public MemberDetailViewModel(IRepository<Person> repository)
@@ -37,6 +40,7 @@ namespace ZainGym.ViewModel
 				if (SelectedMember != null)
 				{
 					ShowRenewButton = true;
+					DisplayPic = ImageHelper.GetImageFromBinary(SelectedMember.DisplayPic); 
 				}
 				OnPropertyChanged("SelectedMember");
 			}
@@ -82,6 +86,16 @@ namespace ZainGym.ViewModel
 			{
 				_showRenewButton = value;
 				OnPropertyChanged("ShowRenewButton");
+			}
+		}
+
+		public ImageSource DisplayPic
+		{
+			get { return _displayPic; }
+			set
+			{
+				_displayPic = value;
+				OnPropertyChanged("DisplayPic");
 			}
 		}
 

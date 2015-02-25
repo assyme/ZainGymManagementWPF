@@ -11,6 +11,7 @@
             <ColumnDefinition ></ColumnDefinition>
             <ColumnDefinition ></ColumnDefinition>
             <ColumnDefinition ></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -35,5 +36,6 @@
         <DatePicker Grid.Column="3" Grid.Row="4" Height="25" Width="120" Text="{Binding Path=MembershipTo}"></DatePicker>
         <!--<Calendar Grid.Column="1" Grid.Row="4" SelectedDate="{Binding Path=NewMember.DateOfBirth}"></Calendar>-->
         <Button Margin="0,4,0,0" Grid.Row="5" Grid.Column="3" Content="Add member" Width="100" Command="{Binding Path=AddNewMemberCommand}"></Button>
+        
     </Grid>
 </UserControl>
