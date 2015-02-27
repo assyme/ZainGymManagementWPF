@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Linq;
 using System.Security.AccessControl;
 using System.Windows.Controls;
@@ -14,10 +15,14 @@ namespace ZainGym.ViewModel
 	public class AddNewMemberViewModel : BaseViewModel
 	{
 		private readonly IRepository<Person> _personRepository;
-		private Person _newMember;
-		private Membership _newMembership; 
 		private ICommand _addNewMemberCommand;
-		
+		private DateTime _membershipFrom;
+		private DateTime _membershipExpiry;
+		private string _firstName;
+		private string _lastName;
+		private DateTime _dateBirth;
+		private string _mobileNumber;
+
 		#region Events
 
 		public delegate void MemberCreated(Object sender, Person newMember);
@@ -25,6 +30,8 @@ namespace ZainGym.ViewModel
 		public event MemberCreated OnMemberCreated;
 		#endregion
 
+
+		#region Constructors
 		public AddNewMemberViewModel(IRepository<Person> personRepository)
 		{
 			if (personRepository == null)
@@ -36,41 +43,71 @@ namespace ZainGym.ViewModel
 			#region Camera Behavior
 			#endregion
 		}
+		#endregion
 
-		
 		public DateTime MembershipFrom
 		{
 			get
 			{
-				return _newMembership.MemberFrom;
+				return _membershipFrom;
 			}
 			set
 			{
-				_newMembership.MemberFrom = value;
+				_membershipFrom = value;
 				OnPropertyChanged("MembershipFrom");
 			}
 		}
 
-		public DateTime MembershipTo
+		public DateTime MembershipExpiry
 		{
-			get { return _newMembership.MemberExpiry; }
+			get { return _membershipExpiry; }
 			set
 			{
-				_newMembership.MemberExpiry = value;
-				OnPropertyChanged("MembershipTo");
+				_membershipExpiry = value;
+				OnPropertyChanged("MembershipExpiry");
 			}
 		}
 
-		public Person NewMember
+		public string FirstName
 		{
-			get { return _newMember; }
+			get { return _firstName; }
 			set
 			{
-				_newMember = value;
-				OnPropertyChanged("NewMember");
+				_firstName = value;
+				OnPropertyChanged("FirstName");
 			}
 		}
 
+		public string LastName
+		{
+			get { return _lastName; }
+			set
+			{
+				_lastName = value;
+				OnPropertyChanged("LastName");
+			}
+		}
+
+		public DateTime DateBirth
+		{
+			get { return _dateBirth; }
+			set
+			{
+				_dateBirth = value; 
+				OnPropertyChanged("DateBirth");
+			}
+		}
+
+		public string MobileNumber
+		{
+			get { return _mobileNumber; }
+			set
+			{
+				_mobileNumber = value;
+				OnPropertyChanged("MobileNumber");
+			}
+		}
+		#region Events
 		public ICommand AddNewMemberCommand
 		{
 			get
@@ -82,6 +119,7 @@ namespace ZainGym.ViewModel
 				return _addNewMemberCommand;
 			}
 		}
+		#endregion
 
 		#region Private funtions
 
@@ -92,34 +130,28 @@ namespace ZainGym.ViewModel
 
 		private void ExecuteAddNewMember(object obj)
 		{
-			if (NewMember.IsValid())
+			Person memberToAdd = _personRepository.CreateInstance();
+			memberToAdd.FirstName = FirstName;
+			memberToAdd.LastName = LastName;
+			memberToAdd.MobileNumber = MobileNumber;
+			memberToAdd.DateOfBirth = DateBirth;
+			memberToAdd.Memberships[0].MemberFrom = MembershipFrom;
+			memberToAdd.Memberships[0].MemberExpiry = MembershipExpiry;
+			memberToAdd.DisplayPic = ImageHelper.GetBinaryFromImageSource(@"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg");
+			if (memberToAdd.IsValid())
 			{
-				Person memberToAdd = _personRepository.CreateInstance();
-				memberToAdd.FirstName = NewMember.FirstName;
-				memberToAdd.LastName = NewMember.LastName;
-				memberToAdd.MobileNumber = NewMember.MobileNumber;
-				memberToAdd.DateOfBirth = NewMember.DateOfBirth;
-				memberToAdd.Memberships = NewMember.Memberships;
-
-				#region Save Image
-
-				memberToAdd.DisplayPic = ImageHelper.GetBinaryFromImageSource(@"C:\Users\Public\Pictures\Sample Pictures\Koala.jpg");
-				
-				#endregion
-
 				_personRepository.SaveAll();
 				if (OnMemberCreated != null)
-					OnMemberCreated(this, NewMember);
-
+					OnMemberCreated(this, memberToAdd);
 				RefreshNewMember();
 			}
 		}
 
 		private void RefreshNewMember()
 		{
-			NewMember = new Person();
-			_newMembership = new Membership {MemberExpiry = DateTime.UtcNow.AddMonths(1), MemberFrom = DateTime.UtcNow,Person = NewMember};
-			NewMember.Memberships.Add(_newMembership);
+			FirstName = LastName = MobileNumber = string.Empty;
+			DateBirth = MembershipFrom = DateTime.UtcNow;
+			MembershipExpiry = DateTime.UtcNow.AddMonths(1); // Default 1 month expiry. 
 		}
 
 		#endregion
