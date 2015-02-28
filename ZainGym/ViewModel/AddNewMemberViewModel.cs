@@ -8,7 +8,6 @@ using System.Windows.Media.Imaging;
 using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
-using WebCam_Capture;
 
 namespace ZainGym.ViewModel
 {
