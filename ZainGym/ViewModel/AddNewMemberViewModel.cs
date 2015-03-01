@@ -5,6 +5,7 @@ using System.Security.AccessControl;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 using ZainGym.Business;
 using ZainGym.DataAccess;
 using ZainGym.Model;
@@ -21,6 +22,8 @@ namespace ZainGym.ViewModel
 		private string _lastName;
 		private DateTime _dateBirth;
 		private string _mobileNumber;
+		private ICommand _selectDisplayPicCommand;
+		private string _displayPicPath;
 
 		#region Events
 
@@ -106,6 +109,17 @@ namespace ZainGym.ViewModel
 				OnPropertyChanged("MobileNumber");
 			}
 		}
+
+		public string DisplayPicPath
+		{
+			get { return _displayPicPath; }
+			set
+			{
+				_displayPicPath = value;
+				OnPropertyChanged("DisplayPicPath");
+			}
+		}
+
 		#region Events
 		public ICommand AddNewMemberCommand
 		{
@@ -118,6 +132,37 @@ namespace ZainGym.ViewModel
 				return _addNewMemberCommand;
 			}
 		}
+
+		public ICommand SelectDisplayPicCommand
+		{
+			get
+			{
+				if (_selectDisplayPicCommand == null)
+				{
+					_selectDisplayPicCommand = new RelayCommand(ExecuteSelectDisplayPicCommand,(x) => true);
+				}
+				return _selectDisplayPicCommand;
+			}
+		}
+
+		private void ExecuteSelectDisplayPicCommand(object obj)
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+
+			dialog.DefaultExt = ".jpg";
+			dialog.Filter = "JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif";
+
+			Nullable<bool> result = dialog.ShowDialog();
+
+			if (result == true)
+			{
+				string filePath = dialog.FileName;
+				DisplayPicPath = filePath;
+			}
+		}
+
+		
+
 		#endregion
 
 		#region Private funtions

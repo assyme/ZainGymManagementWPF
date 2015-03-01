@@ -5,6 +5,35 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style
+    x:Key="LinkButton"
+    TargetType="Button">
+            <Setter
+        Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+                TargetType="Button">
+                        <TextBlock
+                    TextDecorations="Underline">
+                <ContentPresenter /></TextBlock>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter
+        Property="Foreground"
+        Value="Blue" />
+            <Style.Triggers>
+                <Trigger
+            Property="IsMouseOver"
+            Value="true">
+                    <Setter
+                Property="Foreground"
+                Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition ></ColumnDefinition>
@@ -36,6 +65,13 @@
         <DatePicker Grid.Column="3" Grid.Row="4" Height="25" Width="120" Text="{Binding Path=MembershipExpiry}"></DatePicker>
         <!--<Calendar Grid.Column="1" Grid.Row="4" SelectedDate="{Binding Path=NewMember.DateOfBirth}"></Calendar>-->
         <Button Margin="0,4,0,0" Grid.Row="5" Grid.Column="3" Content="Add member" Width="100" Command="{Binding Path=AddNewMemberCommand}"></Button>
+        
+        <StackPanel Grid.Row="1" Grid.Column="4" Grid.RowSpan="4">
+            <Image MaxHeight="120" MaxWidth="120" Source="{Binding Path=DisplayPicPath}"></Image>
+            <TextBox Text="{Binding Path=DisplayPicPath}"></TextBox>
+            <Button Style="{StaticResource LinkButton}" Command="{Binding Path=SelectDisplayPicCommand}" Content="Select pic"></Button>
+        </StackPanel>
+        
         
     </Grid>
 </UserControl>
